@@ -1,0 +1,110 @@
+body {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: grid;
+  text-align: center;
+  grid-template:
+    "....  " 20px
+    "header" 60px
+    "....  " 10px
+    "menu  " 100px
+    "....  " 0px
+    "game " 500px
+    "....  " 0px
+    "footer" 60px;
+}
+header {
+  grid-area: header;
+}
+nav {
+  grid-area: menu;
+}
+main {
+  grid-area: game;
+}
+footer {
+  grid-area: footer;
+}
+.play-btn {
+  background: rgba(6, 78, 59, 0.2);
+  border: none;
+  color: rgba(6, 78, 59, 1);
+
+  font-size: 30px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  /* Safari */
+  cursor: pointer;
+}
+.play-btn:hover {
+  background: rgba(6, 78, 59, 0.8);
+  color: white;
+}
+
+.game-board-row {
+  display: flex;
+}
+
+.canvas-parent {
+  position: relative;
+}
+canvas {
+  position: absolute;
+  background: rgba(6, 78, 59, 0.05);
+  width: 336px;
+  height: 336px;
+}
+.circle {
+  width: 64px;
+  height: 64px;
+  margin: 10px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background: rgba(6, 78, 59, 0.2);
+}
+.circle-selected {
+  width: 64px;
+  height: 64px;
+  margin: 10px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background: rgba(6, 78, 59, 1);
+}
+@media (min-width: 768px) {
+  body {
+    width: 768px;
+    grid-template:
+      "... ...... ...... ...... ..." 20px
+      "... header header header ..." 60px
+      "... ...... ...... ...... ..." 50px
+      "... menu   ...... game   ..." 1fr
+      "... ...... ...... ...... ..." 10px
+      "... footer footer footer ..." 60px
+      "... ...... ...... ...... ..." 0px
+      / 0px 250px 0px 1fr 0px;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+  }
+  .play-btn {
+    font-size: 50px;
+  }
+  canvas {
+    width: 504px;
+    height: 504px;
+  }
+  .circle {
+    width: 96px;
+    height: 96px;
+    margin: 15px;
+  }
+
+  .circle-selected {
+    width: 96px;
+    height: 96px;
+    margin: 15px;
+  }
+}
