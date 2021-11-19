@@ -41,7 +41,18 @@ const getCircleId = (offset, windowSize) => {
 };
 
 function argMax(array) {
-  return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+  if (array.length === 0) {
+    return -1;
+  }
+  let max = array[0];
+  let argmax = 0;
+  array.forEach((element, index) => {
+    if (element > max) {
+      max = element;
+      argmax = index;
+    }
+  });
+  return argmax;
 }
 
 const useLinesAi = (props) => {
@@ -73,7 +84,9 @@ const useLinesAi = (props) => {
     if (dotsToLine === undefined || lineToValidLines === undefined) {
       return;
     }
-
+    if (lines.length % 2 === 1) {
+      return;
+    }
     if (offsetFinishDrawing[0] >= 0) {
       // save state
       const start = getCircleId(offsetStartDrawing, windowSize);
@@ -82,7 +95,6 @@ const useLinesAi = (props) => {
         return;
       }
       const line = dotsToLine[start * 16 + end];
-
       // is valid line
       if (line === -1) {
         return;
@@ -105,45 +117,46 @@ const useLinesAi = (props) => {
       ctxRef.current.lineTo(offsetFinishDrawing[0], offsetFinishDrawing[1]);
       ctxRef.current.stroke();
     }
-    // // init
+    // init
     setOffsetStartDrawing([-1, -1]);
     setOffsetFinishDrawing([-1, -1]);
   }, [offsetFinishDrawing, dotsToLine, lineToValidLines, playMode]);
 
-  // useEffect(async () => {
-  //   if (model === undefined) {
-  //     return;
-  //   }
-  //   const L = lines.length + 1;
-  //   let xs = [92, ...lines];
-  //   console.log("xs", xs);
-
-  //   for (var i = 0; i < L; i++) {
-  //     xs[i] += 1;
-  //   }
-  //   const t1d = tf.tensor1d(xs);
-  //   const t2d = tf.reshape(t1d, [1, L]);
-  //   model.executeAsync(t2d).then((predictions) => {
-  //     const data = predictions.dataSync().slice(93 * (L - 1) + 1, 93 * L); // you can also use arraySync or their equivalents async methods
-  //     const line = argMax(data);
-  //     console.log("pred", line);
-  //     //set state
-  //     // setLines((prevArray) => [...prevArray, line]);
-  //     // setValidLines((prevArray) => {
-  //     //   let array = prevArray.slice();
-  //     //   for (var i = 0; i < 92; i++) {
-  //     //     array[i] *= lineToValidLines[line * 92 + i];
-  //     //   }
-  //     //   return array;
-  //     // });
-  //     //draw line
-  //     // const start = [0, 0];
-  //     // const end = [100, 100];
-  //     // ctxRef.current.beginPath();
-  //     // ctxRef.current.moveTo(start[0], start[1]);
-  //     // ctxRef.current.lineTo(end[0], end[1]);
-  //     // ctxRef.current.stroke();
-  //   });
-  // }, [lines]);
+  useEffect(async () => {
+    if (model === undefined) {
+      return;
+    }
+    if (lines.length % 2 === 0) {
+      return;
+    }
+    const L = lines.length + 1;
+    let xs = [92, ...lines];
+    for (var i = 0; i < L; i++) {
+      xs[i] += 1;
+    }
+    const t2d = tf.tensor2d([xs], [1, L]);
+    model.executeAsync(t2d).then((predictions) => {
+      const data = predictions.dataSync();
+      const data92 = data.slice(93 * (L - 1) + 1, 93 * L); // you can also use arraySync or their equivalents async methods
+      const line = argMax(data92);
+      console.log("pred", line);
+      // set state
+      setLines((prevArray) => [...prevArray, line]);
+      setValidLines((prevArray) => {
+        let array = prevArray.slice();
+        for (var i = 0; i < 92; i++) {
+          array[i] *= lineToValidLines[line * 92 + i];
+        }
+        return array;
+      });
+      //draw line
+      // const start = [0, 0];
+      // const end = [100, 100];
+      // ctxRef.current.beginPath();
+      // ctxRef.current.moveTo(start[0], start[1]);
+      // ctxRef.current.lineTo(end[0], end[1]);
+      // ctxRef.current.stroke();
+    });
+  }, [lines]);
 };
 export default useLinesAi;
