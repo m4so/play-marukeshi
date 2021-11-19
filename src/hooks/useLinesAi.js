@@ -1,12 +1,11 @@
-import { getFontDefinitionFromManifest } from "next/dist/server/font-utils";
 import { useEffect, useState } from "react";
 import {
-  RADIUS,
-  MARGIN,
   BOARDER_SMALL,
   MARGIN_SMALL,
-  PLAY_MODE_AI,
+  MARGIN,
   RADIUS_SMALL,
+  RADIUS,
+  PLAY_MODE_AI,
 } from "../consts";
 
 const getCircleId1d = (offset, radius, margin) => {

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import {
   BOARDER_SMALL,
   MARGIN_SMALL,
-  PLAY_MODE_AI,
-  PLAY_MODE_OFFLINE,
+  MARGIN,
   RADIUS_SMALL,
+  RADIUS,
+  PLAY_MODE_OFFLINE,
 } from "../consts";
 const getCircleId1d = (offset, radius, margin) => {
   let circleId1d = -1;
