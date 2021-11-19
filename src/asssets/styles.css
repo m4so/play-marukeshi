@@ -98,6 +98,10 @@ canvas {
   .play-btn {
     font-size: 50px;
   }
+  .play-btn-selected {
+    font-size: 50px;
+  }
+
   canvas {
     width: 504px;
     height: 504px;
