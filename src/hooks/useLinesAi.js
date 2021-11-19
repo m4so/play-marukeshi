@@ -1,3 +1,4 @@
+import { getFontDefinitionFromManifest } from "next/dist/server/font-utils";
 import { useEffect, useState } from "react";
 import {
   BOARDER_SMALL,
@@ -39,7 +40,20 @@ const getCircleId = (offset, windowSize) => {
   circleId = circleIdX + 4 * circleIdY;
   return circleId;
 };
-
+const getOffset = (circleId, windowSize) => {
+  let circleIdX = circleId % 4;
+  let circleIdY = (circleId - circleIdX) / 4;
+  let radius, margin;
+  if (windowSize.width < BOARDER_SMALL) {
+    radius = RADIUS_SMALL;
+    margin = MARGIN_SMALL;
+  } else {
+    radius = RADIUS;
+    margin = MARGIN;
+  }
+  let unit = radius + margin;
+  return [unit * (1 + 2 * circleIdX), unit * (1 + 2 * circleIdY)];
+};
 function argMax(array) {
   if (array.length === 0) {
     return -1;
@@ -65,6 +79,7 @@ const useLinesAi = (props) => {
     setOffsetFinishDrawing,
     dotsToLine,
     lineToValidLines,
+    lineToDots,
     model,
     playMode,
     lines,
@@ -123,7 +138,7 @@ const useLinesAi = (props) => {
   }, [offsetFinishDrawing, dotsToLine, lineToValidLines, playMode]);
 
   useEffect(async () => {
-    if (model === undefined) {
+    if (model === undefined || lineToDots === undefined) {
       return;
     }
     if (playMode !== PLAY_MODE_AI) {
@@ -143,6 +158,7 @@ const useLinesAi = (props) => {
       const data92 = data.slice(93 * (L - 1) + 1, 93 * L); // you can also use arraySync or their equivalents async methods
       const line = argMax(data92);
       console.log("pred", line);
+
       // set state
       setLines((prevArray) => [...prevArray, line]);
       setValidLines((prevArray) => {
@@ -153,12 +169,21 @@ const useLinesAi = (props) => {
         return array;
       });
       //draw line
-      // const start = [0, 0];
-      // const end = [100, 100];
-      // ctxRef.current.beginPath();
-      // ctxRef.current.moveTo(start[0], start[1]);
-      // ctxRef.current.lineTo(end[0], end[1]);
-      // ctxRef.current.stroke();
+      let start = lineToDots[4 * line + 0];
+      let finish;
+      for (var i = 0; i < 4; i++) {
+        let dot = lineToDots[4 * line + i];
+        if (dot != -1) {
+          finish = dot;
+        }
+      }
+      const startOffset = getOffset(start, windowSize);
+      console.log(start, startOffset);
+      const finishOffset = getOffset(finish, windowSize);
+      ctxRef.current.beginPath();
+      ctxRef.current.moveTo(startOffset[0], startOffset[1]);
+      ctxRef.current.lineTo(finishOffset[0], finishOffset[1]);
+      ctxRef.current.stroke();
     });
   }, [lines]);
 };

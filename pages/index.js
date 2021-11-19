@@ -102,6 +102,7 @@ export default function Home() {
     setOffsetFinishDrawing,
     dotsToLine,
     lineToValidLines,
+    lineToDots,
     model,
     lines,
     setLines,
