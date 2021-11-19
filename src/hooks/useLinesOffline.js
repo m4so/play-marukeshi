@@ -49,6 +49,7 @@ const setLines = (props) => {
     setOffsetFinishDrawing,
     dotsToLine,
     lineToValidLines,
+    model,
     playMode,
     lines,
     setLines,
@@ -58,9 +59,6 @@ const setLines = (props) => {
   } = props;
 
   useEffect(() => {
-    if (playMode !== PLAY_MODE_AI) {
-      return;
-    }
     if (playMode !== PLAY_MODE_OFFLINE) {
       return;
     }

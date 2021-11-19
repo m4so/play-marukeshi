@@ -126,6 +126,9 @@ const useLinesAi = (props) => {
     if (model === undefined) {
       return;
     }
+    if (playMode !== PLAY_MODE_AI) {
+      return;
+    }
     if (lines.length % 2 === 0) {
       return;
     }

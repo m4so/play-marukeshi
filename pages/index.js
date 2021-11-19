@@ -109,8 +109,8 @@ export default function Home() {
     setValidLines,
     playMode,
   };
-  useLinesOffline(propsForLines);
   useLinesAi(propsForLines);
+  useLinesOffline(propsForLines);
   const [isSelected, setIsSelected] = useIsSelected(lines, lineToDots);
   const [status, setStatus] = useStatus(
     playMode,
