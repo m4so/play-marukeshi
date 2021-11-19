@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-
+import {
+  BOARDER_SMALL,
+  MARGIN_SMALL,
+  PLAY_MODE_AI,
+  PLAY_MODE_OFFLINE,
+  RADIUS_SMALL,
+} from "../consts";
 const getCircleId1d = (offset, radius, margin) => {
   let circleId1d = -1;
   const div = offset / (2 * (radius + margin));
@@ -14,12 +20,12 @@ const getCircleId = (offset, windowSize) => {
   const [offsetX, offsetY] = offset;
   let circleId = -1;
   let radius, margin;
-  if (windowSize.width < 768) {
-    radius = 32;
-    margin = 10;
+  if (windowSize.width < BOARDER_SMALL) {
+    radius = RADIUS_SMALL;
+    margin = MARGIN_SMALL;
   } else {
-    radius = 48;
-    margin = 15;
+    radius = RADIUS;
+    margin = MARGIN;
   }
   const circleIdX = getCircleId1d(offsetX, radius, margin);
   if (circleIdX < 0) {
@@ -33,7 +39,7 @@ const getCircleId = (offset, windowSize) => {
   return circleId;
 };
 
-const useListLines = (props) => {
+const setLines = (props) => {
   const {
     windowSize,
     ctxRef,
@@ -43,23 +49,28 @@ const useListLines = (props) => {
     setOffsetFinishDrawing,
     dotsToLine,
     lineToValidLines,
-    willPlay,
+    playMode,
+    lines,
+    setLines,
+    validLines,
+    setValidLines,
     ...rest
   } = props;
-  const [lines, setLines] = useState([]);
-  const [validLines, setValidLines] = useState(Array(92).fill(1));
+
   useEffect(() => {
-    if (offsetFinishDrawing[0] < 0 || offsetStartDrawing[0] < 0) {
+    if (playMode !== PLAY_MODE_AI) {
       return;
     }
-    if (!willPlay) {
-      setOffsetStartDrawing([-1, -1]);
-      setOffsetFinishDrawing([-1, -1]);
+    if (playMode !== PLAY_MODE_OFFLINE) {
+      return;
+    }
+    if (offsetFinishDrawing[0] < 0 || offsetStartDrawing[0] < 0) {
       return;
     }
     if (dotsToLine === undefined || lineToValidLines === undefined) {
       return;
     }
+
     if (offsetFinishDrawing[0] >= 0) {
       // save state
       const start = getCircleId(offsetStartDrawing, windowSize);
@@ -94,8 +105,6 @@ const useListLines = (props) => {
     // // init
     setOffsetStartDrawing([-1, -1]);
     setOffsetFinishDrawing([-1, -1]);
-  }, [offsetFinishDrawing, dotsToLine, lineToValidLines, willPlay]);
-
-  return [lines, setLines, validLines, setValidLines];
+  }, [offsetFinishDrawing, dotsToLine, lineToValidLines, playMode]);
 };
-export default useListLines;
+export default setLines;

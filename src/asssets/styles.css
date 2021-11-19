@@ -7,9 +7,9 @@ body {
     "....  " 20px
     "header" 60px
     "....  " 10px
-    "menu  " 100px
+    "menu  "
     "....  " 0px
-    "game " 500px
+    "game " 1fr
     "....  " 0px
     "footer" 60px;
 }
@@ -18,6 +18,8 @@ header {
 }
 nav {
   grid-area: menu;
+  display: flex;
+  flex-direction: column;
 }
 main {
   grid-area: game;
@@ -26,10 +28,9 @@ footer {
   grid-area: footer;
 }
 .play-btn {
-  background: rgba(6, 78, 59, 0.2);
+  background: rgba(6, 78, 59, 0.1);
   border: none;
-  color: rgba(6, 78, 59, 1);
-
+  color: rgb(6, 78, 59);
   font-size: 30px;
   padding: 0.5rem 1rem;
   text-align: center;
@@ -37,8 +38,17 @@ footer {
   cursor: pointer;
 }
 .play-btn:hover {
-  background: rgba(6, 78, 59, 0.8);
+  background: rgb(6, 78, 59);
   color: white;
+}
+.play-btn-selected {
+  background: rgb(6, 78, 59);
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 0.5rem 1rem;
+  text-align: center;
 }
 
 .game-board-row {
@@ -50,7 +60,7 @@ footer {
 }
 canvas {
   position: absolute;
-  background: rgba(6, 78, 59, 0.05);
+  background: rgba(6, 78, 59, 0.1);
   width: 336px;
   height: 336px;
 }
@@ -83,11 +93,7 @@ canvas {
       "... ...... ...... ...... ..." 10px
       "... footer footer footer ..." 60px
       "... ...... ...... ...... ..." 0px
-      / 0px 250px 0px 1fr 0px;
-  }
-  nav {
-    display: flex;
-    align-items: center;
+      / 0px 250px 50px 1fr 0px;
   }
   .play-btn {
     font-size: 50px;

@@ -1,32 +1,49 @@
 import { useEffect, useState } from "react";
+import { PLAY_MODE_AI, PLAY_MODE_NO, PLAY_MODE_OFFLINE } from "../consts";
 
-const useStatus = (willPlay, isSelected, lines) => {
+const useStatus = (playMode, setPlayMode, isSelected, lines) => {
   const [status, setStatus] = useState("");
   useEffect(() => {
     setStatus(() => {
+      if (isSelected === null) {
+        setStatus("PUSH BUTTON TO PLAY");
+        return;
+      }
+      if (playMode === PLAY_MODE_NO) {
+        return;
+      }
       let numSelected = 0;
+      let text = "";
       isSelected.forEach((item) => {
         if (item) {
           numSelected += 1;
         }
       });
-      if (numSelected === 16) {
+      if (numSelected == 16) {
+        text = "WINNER: ";
+      } else {
+        text = "TURN: ";
+      }
+      if (playMode === PLAY_MODE_OFFLINE) {
         if (lines.length % 2 === 0) {
-          return "WINNER: PLAYER1";
+          text += "PLAYER1";
         } else {
-          return "WINNER: PLAYER2";
+          text += "PLAYER2";
         }
       }
-      if (!willPlay) {
-        return "PUSH PLAY";
+      if (playMode === PLAY_MODE_AI) {
+        if (lines.length % 2 === 0) {
+          text += "YOU";
+        } else {
+          text += "AI";
+        }
       }
-      if (lines.length % 2 === 0) {
-        return "TURN: PLAYER1";
-      } else {
-        return "TURN: PLAYER2";
+      if (numSelected === 16) {
+        setPlayMode(PLAY_MODE_NO);
       }
+      setStatus(text);
     });
-  }, [willPlay, isSelected]);
+  }, [isSelected]);
   return [status, setStatus];
 };
 export default useStatus;

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
 const useIsSelected = (lines, lineToDots) => {
-  const [isSelected, setIsSelected] = useState(Array(16).fill(false));
+  const [isSelected, setIsSelected] = useState(null);
   useEffect(() => {
+    if (isSelected == null) {
+      return;
+    }
     setIsSelected((prevArray) => {
       let array = prevArray.slice();
       lines.forEach((line) => {

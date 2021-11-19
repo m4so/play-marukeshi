@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { BOARDER_SMALL, CANVAS, CANVAS_SMALL } from "../consts";
 
 useRef;
 const useCanvas = (windowSize) => {
@@ -6,13 +7,16 @@ const useCanvas = (windowSize) => {
   const ctxRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (canvas === null) {
+      return;
+    }
     const ctx = canvas.getContext("2d");
     // set line stroke and line width
     let size = -1;
-    if (windowSize.width < 768) {
-      size = 336;
+    if (windowSize.width < BOARDER_SMALL) {
+      size = CANVAS_SMALL;
     } else {
-      size = 504;
+      size = CANVAS;
     }
     canvas.width = size;
     canvas.height = size;
