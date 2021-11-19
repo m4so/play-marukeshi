@@ -1,10 +1,11 @@
 import { getFontDefinitionFromManifest } from "next/dist/server/font-utils";
 import { useEffect, useState } from "react";
 import {
+  RADIUS,
+  MARGIN,
   BOARDER_SMALL,
   MARGIN_SMALL,
   PLAY_MODE_AI,
-  PLAY_MODE_OFFLINE,
   RADIUS_SMALL,
 } from "../consts";
 
