@@ -41,8 +41,10 @@ const Board = (props) => {
       <div className="canvas-parent">
         <canvas
           ref={props.canvasRef}
-          onMouseDown={props.onMouseDown}
-          onMouseUp={props.onMouseUp}
+          onMouseDown={props.startDrawing}
+          onMouseUp={props.finishDrawing}
+          onTouchStart={props.startDrawing}
+          onTouchEnd={props.finishDrawing}
         ></canvas>
         <div>{circleItems}</div>
       </div>
@@ -183,8 +185,8 @@ export default function Home() {
         <main className="mt-6">
           <Board
             canvasRef={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseUp={finishDrawing}
+            startDrawing={startDrawing}
+            finishDrawing={finishDrawing}
             isSelected={isSelected}
           />
           <div className="mt-5 text-2xl md:text-3xl">{status}</div>

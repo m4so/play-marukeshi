@@ -6,11 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@tensorflow-models/handpose": "^0.0.7",
     "@tensorflow/tfjs": "^3.11.0",
-    "@tensorflow/tfjs-backend-webgl": "^3.11.0",
-    "@tensorflow/tfjs-converter": "^3.11.0",
-    "@tensorflow/tfjs-core": "^3.11.0",
     "add": "^2.0.6",
     "next": "latest",
     "npyjs": "^0.2.1",
